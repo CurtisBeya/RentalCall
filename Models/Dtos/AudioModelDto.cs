@@ -5,10 +5,10 @@ namespace AudioSummarizer.Models.Dtos
     public class AudioModelDto
     {
         [Required]
-        String Name { get; set; }
+        public String Name { get; set; }
 
         [Required]
-        FormFile AudioFile { get; set; }
+        public FormFile AudioFile { get; set; }
     }
 }
 
