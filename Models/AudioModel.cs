@@ -8,7 +8,7 @@ namespace AudioSummarizer.Models
         public String Name { get; set; }
 
         [Required]
-        public FormFile AudioFile { get; set; }
+        public IFormFile AudioFile { get; set; }
 
         [Required]
         public String Topic { get; set; }
@@ -16,10 +16,5 @@ namespace AudioSummarizer.Models
         [Required]
         public String Summary { get; set; }
 
-        [Required]
-        public float Confindence {  get; set; }
-
-        [Required]
-        public int Duration { get; set; }
     }
 }

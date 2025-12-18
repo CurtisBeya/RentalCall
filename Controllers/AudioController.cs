@@ -40,7 +40,6 @@ namespace AudioSummarizer.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]
@@ -57,7 +56,6 @@ namespace AudioSummarizer.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
         [HttpGet]
         [Route("Details/{id}")]
         [SwaggerOperation(OperationId = nameof(Details))]
