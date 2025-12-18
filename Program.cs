@@ -33,7 +33,7 @@ builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
 
 // Managers
 builder.Services.AddScoped<IAudioManager, AudioManager>();
-builder.Services.AddScoped<IAudioManager, AudioManager>();
+builder.Services.AddScoped<IActionItemManager, ActionItemManager>();
 
 var app = builder.Build();
 
