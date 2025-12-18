@@ -6,12 +6,11 @@ namespace AudioSummarizer.Models
     public class ActionItemModel: BaseModel
     {
         [Required]
-        public String description {  get; set; }
+        public String Description { get; set; }
 
         [Required]
         public long AudioId { get; set; }
 
-        [Required]
         public String? AssignedTo { get; set; }
 
         [Required]

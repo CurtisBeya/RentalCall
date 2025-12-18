@@ -7,15 +7,15 @@ namespace AudioSummarizer.Managers.Interfaces
     {
 
         // add an item action
-        public Task<ActionItemModel> Add(ActionItemModelDto ActionItemDto);
+        Task<ActionItemModel> Add(ActionItemModelDto ActionItemDto);
 
         // updates an item action
-        public Task<ActionItemModel> Update(ActionItemModelDto ActionItemDto);
+        Task<ActionItemModel> Update(ActionItemModelDto ActionItemDto);
 
         // Return the list of all action items
-        public Task<List<ActionItemModel>> List();
+        Task<List<ActionItemModel>> List();
 
         // Return a specific Action Item summary
-        public Task<ActionItemModel?> Details(long ActionItemId);
+        Task<ActionItemModel?> Details(long ActionItemId);
     }
 }

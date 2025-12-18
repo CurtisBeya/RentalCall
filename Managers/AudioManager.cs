@@ -11,29 +11,29 @@ namespace AudioSummarizer.Managers
     {
         private readonly IAudioRepository _audioRepository;
         private readonly IMapper _mapper;
-        public AudioManager(IAudioRepository audioRepositury, Mapper mapper)
+        public AudioManager(IAudioRepository audioRepository, IMapper mapper)
         {
-            _audioRepository = audioRepositury;
+            _audioRepository = audioRepository;
             _mapper = mapper;
         }
 
         // Adds a new audio
-        public Task<AudioModel> Add(AudioModelDto AudioDto)
+        public async Task<AudioModel> Add(AudioModelDto AudioDto)
         {
             AudioModel Audio = _mapper.Map<AudioModel>(AudioDto);
-            return _audioRepository.Add(Audio);
+            return await _audioRepository.Add(Audio);
         }
 
         // Return the list of all audio summaries
-        public Task<List<AudioModel>> List()
+        public async Task<List<AudioModel>> List()
         {
-            return _audioRepository.List();
+            return await _audioRepository.List();
         }
 
         // Return a specific audio summary
-        public Task<AudioModel?> Details(long AudioId)
+        public async Task<AudioModel?> Details(long AudioId)
         {
-            return _audioRepository.Details(AudioId);
+            return await _audioRepository.Details(AudioId);
         }
     }
 }

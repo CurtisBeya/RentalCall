@@ -8,7 +8,7 @@ namespace AudioSummarizer.Models
         public String Name { get; set; }
 
         [Required]
-        public IFormFile AudioFile { get; set; }
+        public String AudioFilePath { get; set; }
 
         [Required]
         public String Topic { get; set; }
