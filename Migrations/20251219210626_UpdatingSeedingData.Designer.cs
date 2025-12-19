@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AudioSummarizer.Migrations
 {
     [DbContext(typeof(AudioSummarizerDbContext))]
-    [Migration("20251219181615_Updating Call table")]
-    partial class UpdatingCalltable
+    [Migration("20251219210626_UpdatingSeedingData")]
+    partial class UpdatingSeedingData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,14 @@ namespace AudioSummarizer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("AssignedTo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("AssignedToDepartment")
+                        .HasColumnType("bit");
 
                     b.Property<long>("CallId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CompletedDateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
@@ -62,15 +65,17 @@ namespace AudioSummarizer.Migrations
                         new
                         {
                             Id = 1L,
-                            AssignedTo = "Reservation department",
+                            AssignedToDepartment = true,
                             CallId = 1L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Make a reservation",
-                            IsCompleted = false
+                            IsCompleted = false,
+                            UpdatedDateTime = new DateTime(2025, 1, 2, 12, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2L,
+                            AssignedToDepartment = false,
                             CallId = 1L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Send invoice",
@@ -79,12 +84,68 @@ namespace AudioSummarizer.Migrations
                         new
                         {
                             Id = 3L,
-                            AssignedTo = "Billings department",
+                            AssignedToDepartment = true,
                             CallId = 2L,
+                            CompletedDateTime = new DateTime(2025, 1, 2, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "request bank details",
                             IsCompleted = true,
                             UpdatedDateTime = new DateTime(2025, 1, 2, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("AudioSummarizer.Models.CallCategoryModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CallCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Bookings"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Billings"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Claims"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Maintenance"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Other"
                         });
                 });
 
@@ -104,9 +165,11 @@ namespace AudioSummarizer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("CallCategoryConfidence")
+                        .HasColumnType("float");
+
+                    b.Property<long>("CallCategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
@@ -120,6 +183,8 @@ namespace AudioSummarizer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CallCategoryId");
+
                     b.ToTable("Calls");
 
                     b.HasData(
@@ -128,7 +193,8 @@ namespace AudioSummarizer.Migrations
                             Id = 1L,
                             AudioFileName = "Audio 1",
                             AudioFilePath = "audio file path test 1",
-                            Category = "Booking",
+                            CallCategoryConfidence = 0.69999999999999996,
+                            CallCategoryId = 1L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Summary = "Client wants to make a booking"
                         },
@@ -137,9 +203,20 @@ namespace AudioSummarizer.Migrations
                             Id = 2L,
                             AudioFileName = "Audio 2",
                             AudioFilePath = "audio file path test 2",
-                            Category = "Refund",
+                            CallCategoryConfidence = 0.59999999999999998,
+                            CallCategoryId = 2L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Summary = "Client wants refund asap"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            AudioFileName = "Audio 3",
+                            AudioFilePath = "audio file path test 3",
+                            CallCategoryConfidence = 0.0,
+                            CallCategoryId = 5L,
+                            CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Summary = "Client asking for a donation"
                         });
                 });
 
@@ -152,6 +229,17 @@ namespace AudioSummarizer.Migrations
                         .IsRequired();
 
                     b.Navigation("Call");
+                });
+
+            modelBuilder.Entity("AudioSummarizer.Models.CallModel", b =>
+                {
+                    b.HasOne("AudioSummarizer.Models.CallCategoryModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CallCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

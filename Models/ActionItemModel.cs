@@ -17,7 +17,6 @@ namespace AudioSummarizer.Models
         [Required]
         public bool IsCompleted { get; set; }
 
-        [Required]
         public DateTime? CompletedDateTime { get; set; }
 
         [JsonIgnore]

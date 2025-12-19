@@ -4,6 +4,7 @@ using AudioSummarizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AudioSummarizer.Migrations
 {
     [DbContext(typeof(AudioSummarizerDbContext))]
-    partial class AudioSummarizerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251219205726_FirstMigration")]
+    partial class FirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,8 +69,7 @@ namespace AudioSummarizer.Migrations
                             CallId = 1L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Make a reservation",
-                            IsCompleted = false,
-                            UpdatedDateTime = new DateTime(2025, 1, 2, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                            IsCompleted = false
                         },
                         new
                         {
@@ -191,7 +193,7 @@ namespace AudioSummarizer.Migrations
                             AudioFileName = "Audio 1",
                             AudioFilePath = "audio file path test 1",
                             CallCategoryConfidence = 0.69999999999999996,
-                            CallCategoryId = 1L,
+                            CallCategoryId = 2L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Summary = "Client wants to make a booking"
                         },
@@ -201,7 +203,7 @@ namespace AudioSummarizer.Migrations
                             AudioFileName = "Audio 2",
                             AudioFilePath = "audio file path test 2",
                             CallCategoryConfidence = 0.59999999999999998,
-                            CallCategoryId = 2L,
+                            CallCategoryId = 1L,
                             CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             Summary = "Client wants refund asap"
                         },
