@@ -2,7 +2,7 @@
 
 namespace AudioSummarizer.Models.Dtos
 {
-    public class AudioModelDto
+    public class CallModelDto
     {
         [Required]
         public String Name { get; set; }

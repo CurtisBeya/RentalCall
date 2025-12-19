@@ -10,13 +10,13 @@ namespace AudioSummarizer.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AudioController : ControllerBase
+    public class CallController : ControllerBase
     {
-        private readonly IAudioManager _audioManager;
+        private readonly ICallManager _callManager;
 
-        public AudioController(IAudioManager audioManager)
+        public CallController(ICallManager callManager)
         {
-            _audioManager = audioManager;
+            _callManager = callManager;
         }
 
         /// <summary>
@@ -29,10 +29,10 @@ namespace AudioSummarizer.Controllers
         [SwaggerOperation(OperationId = nameof(Add))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AudioModelDto))]
-        public async Task<AudioModel> Add(AudioModelDto audio)
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallModelDto))]
+        public async Task<CallModel> Add(CallModelDto audio)
         {
-            return await _audioManager.Add(audio);
+            return await _callManager.Add(audio);
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace AudioSummarizer.Controllers
         [SwaggerOperation(OperationId = nameof(List))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AudioModel))]
-        public async Task<List<AudioModel>> List()
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallModel))]
+        public async Task<List<CallModel>> List()
         {
-            return await _audioManager.List();
+            return await _callManager.List();
         }
 
         // <summary>
@@ -61,10 +61,10 @@ namespace AudioSummarizer.Controllers
         [SwaggerOperation(OperationId = nameof(Details))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AudioModel))]
-        public async Task<AudioModel?> Details([FromRoute] long id)
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallModel))]
+        public async Task<CallModel?> Details([FromRoute] long id)
         {
-            return await _audioManager.Details(id);
+            return await _callManager.Details(id);
         }
     }
 }

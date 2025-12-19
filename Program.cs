@@ -28,11 +28,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Register services
 
 // Repositories
-builder.Services.AddScoped<IAudioRepository, AudioRepository>();
+builder.Services.AddScoped<ICallRepository, CallRepository>();
 builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
 
 // Managers
-builder.Services.AddScoped<IAudioManager, AudioManager>();
+builder.Services.AddScoped<ICallManager, CallManager>();
 builder.Services.AddScoped<IActionItemManager, ActionItemManager>();
 
 var app = builder.Build();

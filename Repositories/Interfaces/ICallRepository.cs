@@ -3,15 +3,15 @@ using AudioSummarizer.Models.Dtos;
 
 namespace AudioSummarizer.Repositories.Interfaces
 {
-    public interface IAudioRepository
+    public interface ICallRepository
     {
         // Adds a new audio
-        Task<AudioModel> Add(AudioModel Audio);
+        Task<CallModel> Add(CallModel Call);
 
         // Return the list of all audio summaries
-        Task<List<AudioModel>> List();
+        Task<List<CallModel>> List();
 
         // Return a specific audio summary
-        Task<AudioModel?> Details(long AudioId);
+        Task<CallModel?> Details(long callId);
     }
 }

@@ -9,14 +9,18 @@ namespace AudioSummarizer.Models
         public String Description { get; set; }
 
         [Required]
-        public long AudioId { get; set; }
+        public long CallId { get; set; }
 
-        public String? AssignedTo { get; set; }
+        [Required]
+        public bool AssignedToDepartment { get; set; }
 
         [Required]
         public bool IsCompleted { get; set; }
 
+        [Required]
+        public DateTime? CompletedDateTime { get; set; }
+
         [JsonIgnore]
-        public AudioModel Audio { get; set; }
+        public CallModel Call { get; set; }
     }
 }

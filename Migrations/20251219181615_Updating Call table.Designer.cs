@@ -4,6 +4,7 @@ using AudioSummarizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AudioSummarizer.Migrations
 {
     [DbContext(typeof(AudioSummarizerDbContext))]
-    partial class AudioSummarizerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251219181615_Updating Call table")]
+    partial class UpdatingCalltable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

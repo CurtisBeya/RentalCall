@@ -5,40 +5,40 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AudioSummarizer.Repositories
 {
-    public class AudioRepository: IAudioRepository
+    public class CallRepository: ICallRepository
     {
         private readonly AudioSummarizerDbContext _audioSummarizerDbContext;
-        private readonly ILogger<AudioRepository> _logger;
+        private readonly ILogger<CallRepository> _logger;
 
-        public AudioRepository(AudioSummarizerDbContext audioSummarizerDbContext, ILogger<AudioRepository> logger)
+        public CallRepository(AudioSummarizerDbContext audioSummarizerDbContext, ILogger<CallRepository> logger)
         {
             _audioSummarizerDbContext = audioSummarizerDbContext;
             _logger = logger;
         }
 
-        // Adds a new audio
-        public async Task<AudioModel> Add(AudioModel Audio)
+        // Adds a new call
+        public async Task<CallModel> Add(CallModel Call)
         {
             try
             {
-                _audioSummarizerDbContext.Audios.Add(Audio);
+                _audioSummarizerDbContext.Calls.Add(Call);
                 await _audioSummarizerDbContext.SaveChangesAsync();
-                return Audio;
+                return Call;
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError(ex, $"Error occurred while adding an audio: {Audio.Name}", Audio);
+                _logger.LogError(ex, $"Error occurred while adding an audio: {Call.AudioFileName}", Call);
                 throw new DbUpdateException($"Unable to add to the database");
             }
 
         }
 
-        // Return the list of all audio summaries
-        public async Task<List<AudioModel>> List()
+        // Return the list of all calls summaries
+        public async Task<List<CallModel>> List()
         {
             try
             {
-                return await _audioSummarizerDbContext.Audios.ToListAsync();
+                return await _audioSummarizerDbContext.Calls.ToListAsync();
             }
             catch (KeyNotFoundException ex)
             {
@@ -47,16 +47,16 @@ namespace AudioSummarizer.Repositories
             }
         }
 
-        // Return a specific audio summary details
-        public async Task<AudioModel?> Details(long AudioId)
+        // Return a specific call summary details
+        public async Task<CallModel?> Details(long CallId)
         {
             try
             {
-                return await _audioSummarizerDbContext.Audios.FindAsync(AudioId);
+                return await _audioSummarizerDbContext.Calls.FindAsync(CallId);
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.LogError(ex, $"Error occurred while retrieving an audio with the ID: {AudioId}");
+                _logger.LogError(ex, $"Error occurred while retrieving a call with the ID: {CallId}");
                 throw new KeyNotFoundException($"Unable to query the database");
             }
         }
