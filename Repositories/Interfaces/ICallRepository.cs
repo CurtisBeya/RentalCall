@@ -8,6 +8,9 @@ namespace AudioSummarizer.Repositories.Interfaces
         // Adds a new audio
         Task<CallModel> Add(CallModel Call);
 
+        //Updates an existing call
+        Task<CallModel> Update(CallModel Call);
+
         // Return the list of all audio summaries
         Task<List<CallModel>> List();
 

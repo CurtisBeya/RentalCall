@@ -2,13 +2,12 @@
 
 namespace AudioSummarizer.Models.Dtos
 {
-    public class CallModelDto
+    public class CallUpdateModelDto
     {
         [Required]
-        public String Name { get; set; }
+        public long Id { get; set; }
 
         [Required]
-        public FormFile AudioFile { get; set; }
+        public bool HasBeenReviewed { get; set; }
     }
 }
-

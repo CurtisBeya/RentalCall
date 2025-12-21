@@ -12,5 +12,7 @@ namespace AudioSummarizer.Repositories.Interfaces
 
         // Return a specific call category details
         Task<CallCategoryModel?> Details(long callCategoryId);
+
+        Task<CallCategoryModel?> DetailsGivenCallCategoryName(String CallCategoryName);
     }
 }

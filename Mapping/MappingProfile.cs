@@ -12,7 +12,8 @@ namespace AudioSummarizer.Mapping
         /// 
         public MappingProfile() 
         {
-            CreateMap<CallModelDto, CallModel>();
+            CreateMap<CallCreateModelDto, CallModel>();
+            CreateMap<CallUpdateModelDto, CallModel>();
             CreateMap<ActionItemModelDto, ActionItemModel>();
         }
     }         

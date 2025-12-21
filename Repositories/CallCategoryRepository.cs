@@ -59,5 +59,20 @@ namespace AudioSummarizer.Repositories
                 throw new KeyNotFoundException($"Unable to query the database");
             }
         }
+
+        public async Task<CallCategoryModel?> DetailsGivenCallCategoryName(String CallCategoryName)
+        {
+            try
+            {
+                return await _audioSummarizerDbContext.CallCategories
+                    .Where(x => x.Name == CallCategoryName)
+                    .FirstOrDefaultAsync();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex, $"Error occurred while retrieving a call category with the name: {CallCategoryName}");
+                throw new KeyNotFoundException($"Unable to query the database");
+            }
+        }
     }
 }

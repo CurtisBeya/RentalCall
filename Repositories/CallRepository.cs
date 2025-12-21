@@ -33,6 +33,23 @@ namespace AudioSummarizer.Repositories
 
         }
 
+        //Updates an existing call
+        public async Task<CallModel> Update(CallModel Call)
+        {
+            try
+            {
+                _audioSummarizerDbContext.Calls.Update(Call);
+                await _audioSummarizerDbContext.SaveChangesAsync();
+                return Call;
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, $"Error occurred while adding an audio: {Call.AudioFileName}", Call);
+                throw new DbUpdateException($"Unable to add to the database");
+            }
+
+        }
+
         // Return the list of all calls summaries
         public async Task<List<CallModel>> List()
         {

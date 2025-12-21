@@ -6,7 +6,9 @@ namespace AudioSummarizer.Managers.Interfaces
     public interface ICallManager
     {
         // Adds a new audio
-        Task<CallModel> Add(CallModelDto CallDto);
+        Task<CallModel> Add(CallCreateModelDto CallDto);
+
+        Task<CallModel> Update(CallUpdateModelDto CallDto);
 
         // Return the list of all audio summaries
         Task<List<CallModel>> List();

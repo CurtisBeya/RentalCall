@@ -55,9 +55,9 @@ namespace AudioSummarizer
             // Seeding the data
 
             modelBuilder.Entity<CallModel>().HasData(
-                new CallModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), AudioFileName = "Audio 1", AudioFilePath = "audio file path test 1", CallCategoryId = 1L, CallCategoryConfidence = 0.7, Summary = "Client wants to make a booking" },
-                new CallModel { Id = 2L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), AudioFileName = "Audio 2", AudioFilePath = "audio file path test 2", CallCategoryId = 2L, CallCategoryConfidence = 0.6, Summary = "Client wants refund asap" },
-                new CallModel { Id = 3L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), AudioFileName = "Audio 3", AudioFilePath = "audio file path test 3", CallCategoryId = 5L, CallCategoryConfidence = 0.0, Summary = "Client asking for a donation" }
+                new CallModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), AudioFileName = "Audio 1", CallCategoryId = 1L, CallCategoryConfidence = 0.7, Summary = "Client wants to make a booking", HasActionItemError = false, HasBeenReviewed = false },
+                new CallModel { Id = 2L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), AudioFileName = "Audio 2", CallCategoryId = 2L, CallCategoryConfidence = 0.6, Summary = "Client wants refund asap", HasActionItemError = false, HasBeenReviewed = false },
+                new CallModel { Id = 3L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), AudioFileName = "Audio 3", CallCategoryId = 5L, CallCategoryConfidence = 0.0, Summary = "Client asking for a donation", HasActionItemError = false, HasBeenReviewed = false }
             );
 
 

@@ -26,7 +26,7 @@ namespace AudioSummarizer.Repositories
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError(ex, $"Error occurred while adding an action item: {ActionItem.Description}", ActionItem);
+                _logger.LogError(ex, $"Error occurred while adding an action item with call Id: {ActionItem.CallId}", ActionItem);
                 throw new DbUpdateException($"Unable to add to the database");
             }
 
@@ -68,7 +68,12 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                return await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
+                var author = await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
+                await _audioSummarizerDbContext.Entry(author).Reference(a => a.Call).LoadAsync();
+
+                return author;
+
+                //return await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
             }
             catch (KeyNotFoundException ex)
             {

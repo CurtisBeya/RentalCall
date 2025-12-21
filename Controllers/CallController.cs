@@ -29,10 +29,26 @@ namespace AudioSummarizer.Controllers
         [SwaggerOperation(OperationId = nameof(Add))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallModelDto))]
-        public async Task<CallModel> Add(CallModelDto audio)
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallCreateModelDto))]
+        public async Task<CallModel> Add(CallCreateModelDto call)
         {
-            return await _callManager.Add(audio);
+            return await _callManager.Add(call);
+        }
+
+        /// <summary>
+        /// Endpoint to add a new audio file and retunrs a summary.
+        /// </summary>
+        /// <param></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Update")]
+        [SwaggerOperation(OperationId = nameof(Update))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallUpdateModelDto))]
+        public async Task<CallModel> Update(CallUpdateModelDto call)
+        {
+            return await _callManager.Update(call);
         }
 
         /// <summary>

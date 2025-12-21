@@ -18,9 +18,16 @@ namespace AudioSummarizer.Managers
         }
 
         //adds an action item
-        public async Task<ActionItemModel> Add(ActionItemModelDto ActionItemDto)
+        public async Task<ActionItemModel> Add(String Description, long CallId)
         {
-            ActionItemModel ActionItem = _mapper.Map<ActionItemModel>(ActionItemDto);
+            ActionItemModel ActionItem= new ActionItemModel();
+
+            ActionItem.Description = Description;
+            ActionItem.CallId = CallId;
+            ActionItem.AssignedToDepartment = false;
+            ActionItem.IsCompleted = false;
+            ActionItem.CreatedDateTime = DateTime.Now;
+
             return await _actionItemRepository.Add(ActionItem);
         }
 

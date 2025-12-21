@@ -7,7 +7,7 @@ namespace AudioSummarizer.Managers.Interfaces
     {
 
         // add an item action
-        Task<ActionItemModel> Add(ActionItemModelDto ActionItemDto);
+        Task<ActionItemModel> Add(String Description, long CallId);
 
         // updates an item action
         Task<ActionItemModel> Update(ActionItemModelDto ActionItemDto);

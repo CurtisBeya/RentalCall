@@ -30,10 +30,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Repositories
 builder.Services.AddScoped<ICallRepository, CallRepository>();
 builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
+builder.Services.AddScoped<ICallCategoryRepository, CallCategoryRepository>();
 
 // Managers
 builder.Services.AddScoped<ICallManager, CallManager>();
 builder.Services.AddScoped<IActionItemManager, ActionItemManager>();
+
 
 var app = builder.Build();
 
