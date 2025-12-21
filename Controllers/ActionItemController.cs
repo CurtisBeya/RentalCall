@@ -74,14 +74,14 @@ namespace AudioSummarizer.Controllers
         /// <param></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("List/GivenCallId/{callId}")]
+        [Route("List/GivenCallId/{id}")]
         [SwaggerOperation(OperationId = nameof(ListGivenCallId))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ActionItemModel))]
-        public async Task<List<ActionItemModel>> ListGivenCallId([FromRoute] long CallId)
+        public async Task<List<ActionItemModel>> ListGivenCallId([FromRoute] long id)
         {
-            return await _actionItemManager.ListGivenCallId(CallId);
+            return await _actionItemManager.ListGivenCallId(id);
         }
 
         // <summary>

@@ -73,14 +73,14 @@ namespace AudioSummarizer.Controllers
         /// <param></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("List/Given/CategoryName/{categoryName}")]
+        [Route("List/Given/CategoryName/{category}")]
         [SwaggerOperation(OperationId = nameof(ListGivenCategoryName))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallModel))]
-        public async Task<List<CallModel>> ListGivenCategoryName(String CategoryName)
+        public async Task<List<CallModel>> ListGivenCategoryName([FromRoute] String category)
         {
-            return await _callManager.ListGivenCategoryName(CategoryName);
+            return await _callManager.ListGivenCategoryName(category);
         }
 
         // <summary>
@@ -105,14 +105,14 @@ namespace AudioSummarizer.Controllers
         /// <param></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Search/GivenAudioFileName/{audioFileName}")]
+        [Route("Search/GivenAudioFileName/{filename}")]
         [SwaggerOperation(OperationId = nameof(SearchGivenAudioFileName))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CallModel))]
-        public async Task<CallModel?> SearchGivenAudioFileName([FromRoute] String AudioFileName)
+        public async Task<CallModel?> SearchGivenAudioFileName([FromRoute] String filename)
         {
-            return await _callManager.SearchGivenAudioFileName(AudioFileName);
+            return await _callManager.SearchGivenAudioFileName(filename);
         }
     }
 }

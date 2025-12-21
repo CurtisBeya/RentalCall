@@ -68,7 +68,7 @@ namespace AudioSummarizer
             );
 
             modelBuilder.Entity<CallCategoryModel>().HasData(
-                new CallCategoryModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Bookings" },
+                new CallCategoryModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Reservations" },
                 new CallCategoryModel { Id = 2L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Billings" },
                 new CallCategoryModel { Id = 3L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Claims" },
                 new CallCategoryModel { Id = 4L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Maintenance" },

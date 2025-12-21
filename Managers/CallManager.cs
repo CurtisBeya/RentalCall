@@ -45,11 +45,9 @@ namespace AudioSummarizer.Managers
             Call.CreatedDateTime = DateTime.Now;
 
             // the call is saved first even if action items fail
-
             await _callRepository.Add(Call); 
 
-            //creates ActionItems
-
+            //create ActionItems
             var ActionItemTexts = new List<String>();
 
             foreach (var text in ActionItemTexts)
@@ -61,7 +59,6 @@ namespace AudioSummarizer.Managers
                 catch (Exception ex)
                 {
                     // set call has action item error to true
-
                     Call.HasActionItemError = true;
                 }              
             }
