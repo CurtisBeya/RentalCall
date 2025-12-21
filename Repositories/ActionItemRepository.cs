@@ -84,12 +84,7 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                var author = await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
-                await _audioSummarizerDbContext.Entry(author).Reference(a => a.Call).LoadAsync();
-
-                return author;
-
-                //return await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
+                return await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
             }
             catch (KeyNotFoundException ex)
             {
