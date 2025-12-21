@@ -18,7 +18,7 @@ namespace AudioSummarizer.Managers
         }
 
         //adds an action item
-        public async Task<ActionItemModel> Add(String Description, long CallId)
+        public async Task<ActionItemModel> SystemAdd(String Description, long CallId)
         {
             ActionItemModel ActionItem= new ActionItemModel();
 
@@ -31,10 +31,39 @@ namespace AudioSummarizer.Managers
             return await _actionItemRepository.Add(ActionItem);
         }
 
-        //Updates an action item
-        public async Task<ActionItemModel> Update(ActionItemModelDto ActionItemDto)
+        public async Task<ActionItemModel> ManualAdd(ActionItemCreateModelDto ActionItemDto)
         {
             ActionItemModel ActionItem = _mapper.Map<ActionItemModel>(ActionItemDto);
+
+            ActionItem.Description = ActionItem.Description;
+            ActionItem.CallId = ActionItem.CallId;
+            ActionItem.AssignedToDepartment = ActionItemDto.AssignedToDepartment;
+            ActionItem.IsCompleted = false;
+            ActionItem.CreatedDateTime = DateTime.Now;
+
+            return await _actionItemRepository.Add(ActionItem);
+        }
+
+        //Updates an action item
+        public async Task<ActionItemModel> Update(ActionItemUpdateModelDto ActionItemDto)
+        {
+            //Request existing model
+            ActionItemModel? ActionItem = await Details(ActionItemDto.Id);
+
+            //Update the model
+            ActionItem.AssignedToDepartment = ActionItemDto.AssignedToDepartment;
+            ActionItem.UpdatedDateTime = DateTime.Now;
+
+            if(ActionItem.AssignedToDepartment)
+            {
+                //IsCompleted is updated only when assigned is true
+                ActionItem.IsCompleted = ActionItemDto.IsCompleted;
+
+                //CompletedDateTime is updated only when assigned and IsCompleted are both true
+                if (ActionItem.IsCompleted)
+                    ActionItem.CompletedDateTime = ActionItemDto.CompletedDateTime;
+            }
+            
             return await _actionItemRepository.Update(ActionItem);
         }
 
@@ -42,6 +71,12 @@ namespace AudioSummarizer.Managers
         public async Task<List<ActionItemModel>> List()
         {
             return await _actionItemRepository.List();
+        }
+
+        // Return the list of action items given the call Id
+        public async Task<List<ActionItemModel>> ListGivenCallId(long CallId)
+        {
+            return await _actionItemRepository.ListGivenCallId(CallId);
         }
 
         // Return a specific Action Item summary

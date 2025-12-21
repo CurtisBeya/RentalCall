@@ -26,15 +26,20 @@ namespace AudioSummarizer.Managers
         // Adds a new call
         public async Task<CallModel> Add(CallCreateModelDto CallDto)
         {
-            String CallCategoryName = "Reservations";          //to get from the transcribe service
+            //check if call exists in the database to avoid duplicates
+
+            if(await _callRepository.SearchGivenAudioFileName(CallDto.AudioFileName) != null)
+                throw new ArgumentException($"A call already exists with this file name: {CallDto.AudioFileName}");
+
+            String CallCategoryName = "Reservations";          //to get from the transcription service
 
             CallCategoryModel? CallCategory = await _callCategoryRepository.DetailsGivenCallCategoryName(CallCategoryName);
 
             CallModel Call = _mapper.Map<CallModel>(CallDto);
 
-            Call.Summary = "Client is requesting a cottation"; //to get from the transcribe service
+            Call.Summary = "Client is requesting a cottation"; //to get from the transcription service
             Call.CallCategoryId = CallCategory.Id;
-            Call.CallCategoryConfidence = 0.70;               // to get from the transcribe service
+            Call.CallCategoryConfidence = 0.70;               // to get from the transcription service
             Call.HasActionItemError = false;
             Call.HasBeenReviewed = false;
             Call.CreatedDateTime = DateTime.Now;
@@ -51,7 +56,7 @@ namespace AudioSummarizer.Managers
             {
                 try
                 {
-                    await _actionItemManager.Add(text, Call.Id);
+                    await _actionItemManager.SystemAdd(text, Call.Id);
                 }
                 catch (Exception ex)
                 {
@@ -90,10 +95,26 @@ namespace AudioSummarizer.Managers
             return await _callRepository.List();
         }
 
+        public async Task<List<CallModel>> ListGivenCategoryName(String CategoryName)
+        {
+            //get Category Id
+
+            var CallCategoryEnum = CategoryName.GetCallCategoryEnumFromString();
+            CallCategoryModel? CallCategory = await _callCategoryRepository.DetailsGivenCallCategoryName(CallCategoryEnum.ToString());
+
+            return await _callRepository.ListGivenCategoryId(CallCategory.Id);
+        }
+
         // Return a specific call 
         public async Task<CallModel?> Details(long AudioId)
         {
             return await _callRepository.Details(AudioId);
+        }
+
+        // Return a specific call given the file name
+        public async Task<CallModel?> SearchGivenAudioFileName(String AudioFileName)
+        {
+            return await _callRepository.SearchGivenAudioFileName(AudioFileName);
         }
     }
 }

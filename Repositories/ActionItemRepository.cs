@@ -63,7 +63,23 @@ namespace AudioSummarizer.Repositories
             }
         }
 
-        // Return a specific action item summary
+        // Return the list of action items given CallId
+        public async Task<List<ActionItemModel>> ListGivenCallId(long CallId)
+        {
+            try
+            {
+                return await _audioSummarizerDbContext.ActionItems
+                    .Where(x => x.CallId == CallId)
+                    .ToListAsync();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex, $"Error occurred while retrieving an action item list given the call Id");
+                throw new KeyNotFoundException($"Unable to return the list");
+            }
+        }
+
+        // Return a specific action item
         public async Task<ActionItemModel?> Details(long ActionItemId)
         {
             try

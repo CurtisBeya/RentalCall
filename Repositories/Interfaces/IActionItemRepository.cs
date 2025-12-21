@@ -13,6 +13,9 @@ namespace AudioSummarizer.Repositories.Interfaces
         // Return the list of all action items
         public Task<List<ActionItemModel>> List();
 
+        // Return the list of all action items given callId
+        public Task<List<ActionItemModel>> ListGivenCallId(long CallId);
+
         // Return a specific item action summary
         public Task<ActionItemModel?> Details(long ActionItemId);
     }

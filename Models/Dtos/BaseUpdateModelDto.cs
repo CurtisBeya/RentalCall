@@ -2,9 +2,10 @@
 
 namespace AudioSummarizer.Models.Dtos
 {
-    public class CallUpdateModelDto: BaseUpdateModelDto
+    public class BaseUpdateModelDto
     {
         [Required]
-        public bool HasBeenReviewed { get; set; }
+
+        public long Id { get; set; }
     }
 }

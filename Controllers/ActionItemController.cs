@@ -21,6 +21,22 @@ namespace AudioSummarizer.Controllers
         }
 
         /// <summary>
+        /// Endpoint to return to add an action item manually
+        /// </summary>
+        /// <param></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("ManualAdd")]
+        [SwaggerOperation(OperationId = nameof(ManualAdd))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ActionItemModel))]
+        public async Task<ActionItemModel> ManualAdd(ActionItemCreateModelDto ActionItemDto)
+        {
+            return await _actionItemManager.ManualAdd(ActionItemDto);
+        }
+
+        /// <summary>
         /// Endpoint to return to update an action item
         /// </summary>
         /// <param></param>
@@ -31,9 +47,41 @@ namespace AudioSummarizer.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ActionItemModel))]
-        public async Task<ActionItemModel> Update(ActionItemModelDto ActionItemDto)
+        public async Task<ActionItemModel> Update(ActionItemUpdateModelDto ActionItemDto)
         {
             return await _actionItemManager.Update(ActionItemDto);
+        }
+
+        /// <summary>
+        /// Endpoint to return the list of all item actions
+        /// </summary>
+        /// <param></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("List")]
+        [SwaggerOperation(OperationId = nameof(List))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ActionItemModel))]
+        public async Task<List<ActionItemModel>> List()
+        {
+            return await _actionItemManager.List();
+        }
+
+        /// <summary>
+        /// Endpoint to return the list of all item actions
+        /// </summary>
+        /// <param></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("List/GivenCallId/{callId}")]
+        [SwaggerOperation(OperationId = nameof(ListGivenCallId))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ActionItemModel))]
+        public async Task<List<ActionItemModel>> ListGivenCallId([FromRoute] long CallId)
+        {
+            return await _actionItemManager.ListGivenCallId(CallId);
         }
 
         // <summary>

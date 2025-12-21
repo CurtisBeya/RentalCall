@@ -64,6 +64,22 @@ namespace AudioSummarizer.Repositories
             }
         }
 
+        // Return the list of all calls given the category Id
+        public async Task<List<CallModel>> ListGivenCategoryId(long CategoryId)
+        {
+            try
+            {
+                return await _audioSummarizerDbContext.Calls
+                    .Where(x => x.CallCategoryId == CategoryId)
+                    .ToListAsync();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex, $"Error occurred while retrieving an audio list");
+                throw new KeyNotFoundException($"Unable to return the list");
+            }
+        }
+
         // Return a specific call summary details
         public async Task<CallModel?> Details(long CallId)
         {
@@ -74,6 +90,22 @@ namespace AudioSummarizer.Repositories
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, $"Error occurred while retrieving a call with the ID: {CallId}");
+                throw new KeyNotFoundException($"Unable to query the database");
+            }
+        }
+
+        // Return a specific call given the name
+        public async Task<CallModel?> SearchGivenAudioFileName(String AudioFileName)
+        {
+            try
+            {
+                return await _audioSummarizerDbContext.Calls.
+                    Where(x => x.AudioFileName == AudioFileName)
+                    .FirstOrDefaultAsync();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex, $"Error occurred while retrieving a call with name: {AudioFileName}");
                 throw new KeyNotFoundException($"Unable to query the database");
             }
         }
