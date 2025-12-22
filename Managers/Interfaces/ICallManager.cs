@@ -8,7 +8,11 @@ namespace AudioSummarizer.Managers.Interfaces
         // Adds a new call
         Task<CallModel> Add(CallCreateModelDto CallDto);
 
+        //Updates an existing call
         Task<CallModel> Update(CallUpdateModelDto CallDto);
+
+        //Automatic call update by the system
+        Task<CallModel> CallReviewSystemUpdate(long CallId);
 
         // Return the list of all call summaries
         Task<List<CallModel>> List();

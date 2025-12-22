@@ -37,7 +37,7 @@ namespace AudioSummarizer.Managers
 
             CallModel Call = _mapper.Map<CallModel>(CallDto);
 
-            Call.Summary = "Client is requesting a cottation"; //to get from the transcription service
+            Call.Summary = "Client is requesting a call back"; //to get from the transcription service
             Call.CallCategoryId = CallCategory.Id;
             Call.CallCategoryConfidence = 0.70;               // to get from the transcription service
             Call.HasActionItemError = false;
@@ -49,6 +49,10 @@ namespace AudioSummarizer.Managers
 
             //create ActionItems
             var ActionItemTexts = new List<String>();
+
+            ActionItemTexts.Add("item action test 4");
+            ActionItemTexts.Add("item action test 5");
+            ActionItemTexts.Add("item action test 6");
 
             foreach (var text in ActionItemTexts)
             {
@@ -81,6 +85,19 @@ namespace AudioSummarizer.Managers
 
             //Update the model
             Call.HasBeenReviewed = CallDto.HasBeenReviewed;
+            Call.UpdatedDateTime = DateTime.UtcNow;
+
+            return await _callRepository.Update(Call);
+        }
+
+        // Update HasBeen reviewed automatically when an ActionItem is added manually to a call
+        public async Task<CallModel> CallReviewSystemUpdate(long CallId)
+        {
+            //Request existing model
+            CallModel? Call = await Details(CallId);
+
+            //Update the model
+            Call.HasBeenReviewed = true;
             Call.UpdatedDateTime = DateTime.UtcNow;
 
             return await _callRepository.Update(Call);

@@ -7,8 +7,8 @@ namespace AudioSummarizer.Models.Dtos
         [Required]
         public String AudioFileName { get; set; }
 
-        [Required]
-        public FormFile AudioFile { get; set; }
+        //[Required]
+        //public FormFile AudioFile { get; set; }
     }
 }
 

@@ -14,10 +14,12 @@ namespace AudioSummarizer.Controllers
     public class ActionItemController: ControllerBase
     {
         private readonly IActionItemManager _actionItemManager;
+        private readonly ICallManager _callManager;
 
-        public ActionItemController(IActionItemManager actionItemManager)
+        public ActionItemController(IActionItemManager actionItemManager, ICallManager callManager)
         {
             _actionItemManager = actionItemManager;
+            _callManager = callManager;
         }
 
         /// <summary>
@@ -33,7 +35,13 @@ namespace AudioSummarizer.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ActionItemModel))]
         public async Task<ActionItemModel> ManualAdd(ActionItemCreateModelDto ActionItemDto)
         {
-            return await _actionItemManager.ManualAdd(ActionItemDto);
+            ActionItemModel ActionItem = await _actionItemManager.ManualAdd(ActionItemDto);
+
+            // Update call HasBeenReviewed automatically when an ActionItem is added manually
+            if (ActionItem != null)
+                await _callManager.CallReviewSystemUpdate(ActionItem.CallId);
+
+            return ActionItem;
         }
 
         /// <summary>
