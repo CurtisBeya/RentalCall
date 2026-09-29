@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AudioSummarizer.Models.Dtos
+namespace RentalCall.Models.Dtos
 {
     public class BaseUpdateModelDto
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AudioSummarizer.Models
+namespace RentalCall.Models
 {
     public class BaseModel
     {

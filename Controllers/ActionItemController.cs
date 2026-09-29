@@ -1,13 +1,13 @@
-﻿using AudioSummarizer.Managers;
-using AudioSummarizer.Managers.Interfaces;
-using AudioSummarizer.Models;
-using AudioSummarizer.Models.Dtos;
+﻿using RentalCall.Managers;
+using RentalCall.Managers.Interfaces;
+using RentalCall.Models;
+using RentalCall.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace AudioSummarizer.Controllers
+namespace RentalCall.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

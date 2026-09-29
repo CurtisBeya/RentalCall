@@ -1,8 +1,8 @@
-﻿using AudioSummarizer.Models.Dtos;
-using AudioSummarizer.Models;
+﻿using RentalCall.Models.Dtos;
+using RentalCall.Models;
 using AutoMapper;
 
-namespace AudioSummarizer.Mapping
+namespace RentalCall.Mapping
 {
     public class MappingProfile: Profile
     {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AudioSummarizer.Controllers
+namespace RentalCall.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AudioSummarizer.Migrations
+namespace RentalCall.Migrations
 {
     /// <inheritdoc />
     public partial class ChangingBookingsToReservations : Migration

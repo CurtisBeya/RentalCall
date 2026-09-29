@@ -1,4 +1,4 @@
-namespace AudioSummarizer
+namespace RentalCall
 {
     public class WeatherForecast
     {

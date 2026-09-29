@@ -1,18 +1,18 @@
-﻿using AudioSummarizer;
-using AudioSummarizer.Models;
-using AudioSummarizer.Repositories.Interfaces;
+﻿using RentalCall;
+using RentalCall.Models;
+using RentalCall.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AudioSummarizer.Repositories
+namespace RentalCall.Repositories
 {
     public class ActionItemRepository: IActionItemRepository
     {
-        private readonly AudioSummarizerDbContext _audioSummarizerDbContext;
+        private readonly RentalCallDbContext _RentalCallDbContext;
         private readonly ILogger<ActionItemRepository> _logger;
 
-        public ActionItemRepository(AudioSummarizerDbContext audioSummarizerDbContext, ILogger<ActionItemRepository> logger)
+        public ActionItemRepository(RentalCallDbContext RentalCallDbContext, ILogger<ActionItemRepository> logger)
         {
-            _audioSummarizerDbContext = audioSummarizerDbContext;
+            _RentalCallDbContext = RentalCallDbContext;
             _logger = logger;
         }
         // Adds a new action item
@@ -20,8 +20,8 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                _audioSummarizerDbContext.ActionItems.Add(ActionItem);
-                await _audioSummarizerDbContext.SaveChangesAsync();
+                _RentalCallDbContext.ActionItems.Add(ActionItem);
+                await _RentalCallDbContext.SaveChangesAsync();
                 return ActionItem;
             }
             catch (DbUpdateException ex)
@@ -37,8 +37,8 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                _audioSummarizerDbContext.ActionItems.Update(ActionItem);
-                await _audioSummarizerDbContext.SaveChangesAsync();
+                _RentalCallDbContext.ActionItems.Update(ActionItem);
+                await _RentalCallDbContext.SaveChangesAsync();
                 return ActionItem;
             }
             catch (DbUpdateException ex)
@@ -54,7 +54,7 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                return await _audioSummarizerDbContext.ActionItems.ToListAsync();
+                return await _RentalCallDbContext.ActionItems.ToListAsync();
             }
             catch (KeyNotFoundException ex)
             {
@@ -68,7 +68,7 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                return await _audioSummarizerDbContext.ActionItems
+                return await _RentalCallDbContext.ActionItems
                     .Where(x => x.CallId == CallId)
                     .ToListAsync();
             }
@@ -84,7 +84,7 @@ namespace AudioSummarizer.Repositories
         {
             try
             {
-                return await _audioSummarizerDbContext.ActionItems.FindAsync(ActionItemId);
+                return await _RentalCallDbContext.ActionItems.FindAsync(ActionItemId);
             }
             catch (KeyNotFoundException ex)
             {

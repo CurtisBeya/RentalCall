@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AudioSummarizer.Models;
+using RentalCall.Models;
 
-namespace AudioSummarizer
+namespace RentalCall
 {
-    public class AudioSummarizerDbContext : DbContext
+    public class RentalCallDbContext : DbContext
     {
         // Default constructor.
-        public AudioSummarizerDbContext()
+        public RentalCallDbContext()
         {
         }
 
         // Constructor that accepts DbContext options.
-        public AudioSummarizerDbContext(DbContextOptions<AudioSummarizerDbContext> options)
+        public RentalCallDbContext(DbContextOptions<RentalCallDbContext> options)
          : base(options)
         {
 

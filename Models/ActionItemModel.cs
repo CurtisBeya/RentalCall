@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 
-namespace AudioSummarizer.Models
+namespace RentalCall.Models
 {
     public class ActionItemModel: BaseModel
     {

@@ -1,13 +1,13 @@
-﻿using AudioSummarizer.Enums;
-using AudioSummarizer.Managers.Interfaces;
-using AudioSummarizer.Models;
-using AudioSummarizer.Models.Dtos;
-using AudioSummarizer.Repositories;
-using AudioSummarizer.Repositories.Interfaces;
+﻿using RentalCall.Enums;
+using RentalCall.Managers.Interfaces;
+using RentalCall.Models;
+using RentalCall.Models.Dtos;
+using RentalCall.Repositories;
+using RentalCall.Repositories.Interfaces;
 using AutoMapper;
 using Microsoft.Extensions.Hosting;
 
-namespace AudioSummarizer.Managers
+namespace RentalCall.Managers
 {
     public class CallManager: ICallManager
     {
@@ -45,7 +45,7 @@ namespace AudioSummarizer.Managers
             Call.CreatedDateTime = DateTime.Now;
 
             // the call is saved first even if action items fail
-            await _callRepository.Add(Call); 
+            CallModel SavedCall = await _callRepository.Add(Call); 
 
             //create ActionItems
             var ActionItemTexts = new List<String>();
@@ -58,23 +58,23 @@ namespace AudioSummarizer.Managers
             {
                 try
                 {
-                    await _actionItemManager.SystemAdd(text, Call.Id);
+                    await _actionItemManager.SystemAdd(text, SavedCall.Id);
                 }
                 catch (Exception ex)
                 {
                     // set call has action item error to true
-                    Call.HasActionItemError = true;
+                    SavedCall.HasActionItemError = true;
                 }              
             }
 
             // update the call if there was an action item that failed to save
-            if (Call.HasActionItemError)
+            if (SavedCall.HasActionItemError)
             {
-                Call.UpdatedDateTime = DateTime.UtcNow;
-                await _callRepository.Update(Call);
+                SavedCall.UpdatedDateTime = DateTime.UtcNow;
+                await _callRepository.Update(SavedCall);
             }
 
-            return Call;
+            return SavedCall;
         }
 
         // Update a call

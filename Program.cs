@@ -1,9 +1,9 @@
-using AudioSummarizer;
-using AudioSummarizer.Managers;
-using AudioSummarizer.Managers.Interfaces;
-using AudioSummarizer.Repositories;
-using AudioSummarizer.Mapping;
-using AudioSummarizer.Repositories.Interfaces;
+using RentalCall;
+using RentalCall.Managers;
+using RentalCall.Managers.Interfaces;
+using RentalCall.Repositories;
+using RentalCall.Mapping;
+using RentalCall.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AudioSummarizerDbContext>(options =>
+builder.Services.AddDbContext<RentalCallDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

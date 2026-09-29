@@ -1,7 +1,7 @@
-﻿using AudioSummarizer.Models;
-using AudioSummarizer.Models.Dtos;
+﻿using RentalCall.Models;
+using RentalCall.Models.Dtos;
 
-namespace AudioSummarizer.Managers.Interfaces
+namespace RentalCall.Managers.Interfaces
 {
     public interface IActionItemManager
     {

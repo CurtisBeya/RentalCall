@@ -1,6 +1,6 @@
-﻿using AudioSummarizer.Models;
+﻿using RentalCall.Models;
 
-namespace AudioSummarizer.Repositories.Interfaces
+namespace RentalCall.Repositories.Interfaces
 {
     public interface ICallCategoryRepository
     {

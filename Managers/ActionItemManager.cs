@@ -1,11 +1,12 @@
-﻿using AudioSummarizer.Managers.Interfaces;
-using AudioSummarizer.Models;
-using AudioSummarizer.Models.Dtos;
-using AudioSummarizer.Repositories;
-using AudioSummarizer.Repositories.Interfaces;
+﻿using RentalCall.Managers.Interfaces;
+using RentalCall.Models;
+using RentalCall.Models.Dtos;
+using RentalCall.Repositories;
+using RentalCall.Repositories.Interfaces;
 using AutoMapper;
+using System.ComponentModel.Design;
 
-namespace AudioSummarizer.Managers
+namespace RentalCall.Managers
 {
     public class ActionItemManager: IActionItemManager
     {
@@ -51,19 +52,26 @@ namespace AudioSummarizer.Managers
             ActionItemModel? ActionItem = await Details(ActionItemDto.Id);
 
             //Update the model
-            ActionItem.AssignedToDepartment = ActionItemDto.AssignedToDepartment;
-            ActionItem.UpdatedDateTime = DateTime.Now;
 
-            if(ActionItem.AssignedToDepartment)
+            if(!ActionItem.IsCompleted)
             {
-                //IsCompleted is updated only when assigned is true
-                ActionItem.IsCompleted = ActionItemDto.IsCompleted;
+                ActionItem.AssignedToDepartment = ActionItemDto.AssignedToDepartment;
+                
+                if (ActionItem.AssignedToDepartment)
+                {
+                    //IsCompleted is updated only when assigned is true
+                    ActionItem.IsCompleted = ActionItemDto.IsCompleted;
+                    ActionItem.CompletedDateTime = DateTime.Now;
+                }
+                else
+                    ActionItem.IsCompleted = false;
 
-                //CompletedDateTime is updated only when assigned and IsCompleted are both true
-                if (ActionItem.IsCompleted)
-                    ActionItem.CompletedDateTime = ActionItemDto.CompletedDateTime;
+                ActionItem.UpdatedDateTime = DateTime.Now;
+
             }
-            
+            else
+                throw new ArgumentException($"Error: ActionItem already completed, update not allowed");
+
             return await _actionItemRepository.Update(ActionItem);
         }
 

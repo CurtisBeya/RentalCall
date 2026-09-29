@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AudioSummarizer.Migrations
+namespace RentalCall.Migrations
 {
     /// <inheritdoc />
     public partial class TablesPropertiesFinalUpdate : Migration

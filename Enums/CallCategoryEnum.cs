@@ -1,4 +1,4 @@
-﻿namespace AudioSummarizer.Enums
+﻿namespace RentalCall.Enums
 {
     internal enum CallCategoryEnum
     {
