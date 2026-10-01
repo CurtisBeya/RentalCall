@@ -17,20 +17,13 @@ namespace RentalCall
 
         }
 
-        // Configures the context to use a specific database connection if not already configured.
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ShareTrustDvDb;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=false;");
-            }
-        }
-
         // Database representations
         public virtual DbSet<CallModel> Calls { get; set; }
         public virtual DbSet<ActionItemModel> ActionItems { get; set; }
 
         public virtual DbSet<CallCategoryModel> CallCategories { get; set; }
+        public virtual DbSet<UserModel> Users { get; set; }
+        public virtual DbSet<UserRoleModel> UserRoles { get; set; }
 
 
         // Configures entity relationships and seeding data.
@@ -49,6 +42,13 @@ namespace RentalCall
                .HasOne(t => t.Category)
                .WithMany()
                .HasForeignKey(t => t.CallCategoryId)
+               .IsRequired(true)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserModel>()
+               .HasOne(t => t.UserRole)
+               .WithMany()
+               .HasForeignKey(t => t.UserRoleId)
                .IsRequired(true)
                .OnDelete(DeleteBehavior.Restrict);
 
@@ -73,6 +73,14 @@ namespace RentalCall
                 new CallCategoryModel { Id = 3L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Claims" },
                 new CallCategoryModel { Id = 4L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Maintenance" },
                 new CallCategoryModel { Id = 5L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Other" }
+            );
+
+            modelBuilder.Entity<UserModel>().HasData(
+                new UserModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), FirstName = "Curtis", LastName = "Beya", EmailAddress = "mpatabeyacurtis@gmail.com", Password = "Curtis", UserRoleId = 1L, IsActive = true }
+            );
+
+            modelBuilder.Entity<UserRoleModel>().HasData(
+                new UserRoleModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Admin" }
             );
         }
     }
