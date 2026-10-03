@@ -15,23 +15,6 @@ namespace RentalCall.Repositories
             _logger = logger;
         }
 
-        // Adds a new call category
-        public async Task<CallCategoryModel> Add(CallCategoryModel CallCategory)
-        {
-            try
-            {
-                _RentalCallDbContext.CallCategories.Add(CallCategory);
-                await _RentalCallDbContext.SaveChangesAsync();
-                return CallCategory;
-            }
-            catch (DbUpdateException ex)
-            {
-                _logger.LogError(ex, $"Error occurred while adding an audio: {CallCategory.Name}", CallCategory);
-                throw new DbUpdateException($"Unable to add to the database");
-            }
-
-        }
-
         // Return the list of all call categories
         public async Task<List<CallCategoryModel>> List()
         {
