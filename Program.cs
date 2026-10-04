@@ -31,10 +31,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICallRepository, CallRepository>();
 builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
 builder.Services.AddScoped<ICallCategoryRepository, CallCategoryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
 // Managers
 builder.Services.AddScoped<ICallManager, CallManager>();
 builder.Services.AddScoped<IActionItemManager, ActionItemManager>();
+builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IUserRoleManager, UserRoleManager>();
 
 
 var app = builder.Build();
