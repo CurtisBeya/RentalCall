@@ -80,7 +80,9 @@ namespace RentalCall
             );
 
             modelBuilder.Entity<UserRoleModel>().HasData(
-                new UserRoleModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Admin" }
+                new UserRoleModel { Id = 1L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "Admin" },
+                new UserRoleModel { Id = 2L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "DepartmentManager" },
+                new UserRoleModel { Id = 3L, CreatedDateTime = new DateTime(2025, 1, 1, 12, 0, 0), Name = "User" }
             );
         }
     }
