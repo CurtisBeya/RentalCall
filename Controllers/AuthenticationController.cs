@@ -34,9 +34,7 @@ namespace RentalCall.Controllers
             if (user == null)
                 return Unauthorized("Invalid credentials");
 
-            bool passwordMatch = user.Password == loginDetailsDto.Password;
-
-            //bool passwordMatch = _passwordService.VerifyPassword(user.Password, loginDetailsDto.Password);
+            bool passwordMatch = _passwordService.VerifyPassword(user.Password, loginDetailsDto.Password);
 
             if (!passwordMatch)
                 return Unauthorized(new { Message = "Invalid username or password" });
@@ -48,8 +46,8 @@ namespace RentalCall.Controllers
             return Ok(new { jwtToken });
         }
 
-        [HttpPatch("/password/reset")]
-        public IActionResult Reset( LoginDetailsDto PasswordResetDto)
+        [HttpPut("Password/Reset")]
+        public IActionResult PasswordReset( LoginDetailsDto PasswordResetDto)
         {
             var PasswordHash = _passwordService.HashPassword(PasswordResetDto.Password);
             PasswordResetDto.Password = PasswordHash;
