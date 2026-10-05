@@ -43,7 +43,7 @@ namespace RentalCall.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        [Route("Update")]
+        [Route("Role/Update")]
         [SwaggerOperation(OperationId = nameof(Update))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
