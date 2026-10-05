@@ -41,7 +41,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "Admin, DepartemntManager")]
         [HttpPut]
         [Route("Update")]
         [SwaggerOperation(OperationId = nameof(Update))]

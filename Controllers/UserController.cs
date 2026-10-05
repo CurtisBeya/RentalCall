@@ -24,7 +24,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("Add")]
         [SwaggerOperation(OperationId = nameof(Add))]
@@ -41,7 +41,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("Update")]
         [SwaggerOperation(OperationId = nameof(Update))]

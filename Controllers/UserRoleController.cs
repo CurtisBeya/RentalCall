@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RentalCall.Enums;
 using RentalCall.Managers.Interfaces;
 using RentalCall.Models;
+using RentalCall.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace RentalCall.Controllers
@@ -22,7 +24,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]

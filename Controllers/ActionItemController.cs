@@ -27,7 +27,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "Admin, DepartemntManager")]
         [HttpPost]
         [Route("ManualAdd")]
         [SwaggerOperation(OperationId = nameof(ManualAdd))]
@@ -50,7 +50,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(Roles = "Admin, DepartemntManager")]
         [HttpPut]
         [Route("Update")]
         [SwaggerOperation(OperationId = nameof(Update))]
@@ -67,7 +67,6 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]
