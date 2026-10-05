@@ -1,14 +1,15 @@
-using Microsoft.OpenApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using RentalCall;
 using RentalCall.Managers;
 using RentalCall.Managers.Interfaces;
 using RentalCall.Repositories;
 using RentalCall.Repositories.Interfaces;
 using RentalCall.Services;
+using RentalCall.Services.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,6 +66,8 @@ builder.Services.AddDbContext<RentalCallDbContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Register services
+builder.Services.AddScoped<IPasswordHasher<object>, PasswordHasher<object>>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 // Repositories
 builder.Services.AddScoped<ICallRepository, CallRepository>();
@@ -72,12 +75,15 @@ builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
 builder.Services.AddScoped<ICallCategoryRepository, CallCategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
 // Managers
 builder.Services.AddScoped<ICallManager, CallManager>();
 builder.Services.AddScoped<IActionItemManager, ActionItemManager>();
+builder.Services.AddScoped<ICallCategoryManager, CallCategoryManager>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserRoleManager, UserRoleManager>();
+builder.Services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
 
 var app = builder.Build();

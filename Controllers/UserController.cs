@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentalCall.Managers.Interfaces;
 using RentalCall.Models;
@@ -23,6 +24,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         [Route("Add")]
         [SwaggerOperation(OperationId = nameof(Add))]
@@ -39,6 +41,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPut]
         [Route("Update")]
         [SwaggerOperation(OperationId = nameof(Update))]
@@ -55,6 +58,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]
@@ -71,6 +75,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("Details/{id}")]
         [SwaggerOperation(OperationId = nameof(Details))]

@@ -24,6 +24,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         [Route("Add")]
         [SwaggerOperation(OperationId = nameof(Add))]
@@ -40,6 +41,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPut]
         [Route("Update")]
         [SwaggerOperation(OperationId = nameof(Update))]
@@ -56,6 +58,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]
@@ -72,6 +75,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("List/Given/CategoryName/{category}")]
         [SwaggerOperation(OperationId = nameof(ListGivenCategoryName))]
@@ -88,6 +92,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("Details/{id}")]
         [SwaggerOperation(OperationId = nameof(Details))]
@@ -104,6 +109,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("Search/GivenAudioFileName/{filename}")]
         [SwaggerOperation(OperationId = nameof(SearchGivenAudioFileName))]

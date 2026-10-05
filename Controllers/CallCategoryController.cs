@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentalCall.Managers.Interfaces;
 using RentalCall.Models;
@@ -22,6 +23,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]

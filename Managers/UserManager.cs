@@ -29,7 +29,7 @@ namespace RentalCall.Managers
             return await _userRepository.Update(User);
         }
 
-        //Updates a new user
+        //Updates an existaing user
         public async Task<UserModel> Update(UserUpdateModelDto UserDto)
         {
             //Request existing model

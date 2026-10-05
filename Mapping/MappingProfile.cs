@@ -16,6 +16,7 @@ namespace RentalCall.Mapping
             CreateMap<CallUpdateModelDto, CallModel>();
             CreateMap<ActionItemCreateModelDto, ActionItemModel>();
             CreateMap<UserCreateModelDto, UserModel>();
+            CreateMap<LoginDetailsDto, UserModel>();
         }
     }         
 }

@@ -27,6 +27,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         [Route("ManualAdd")]
         [SwaggerOperation(OperationId = nameof(ManualAdd))]
@@ -49,6 +50,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPut]
         [Route("Update")]
         [SwaggerOperation(OperationId = nameof(Update))]
@@ -65,6 +67,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("List")]
         [SwaggerOperation(OperationId = nameof(List))]
@@ -81,6 +84,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("List/GivenCallId/{id}")]
         [SwaggerOperation(OperationId = nameof(ListGivenCallId))]
@@ -97,6 +101,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         [Route("Details/{id}")]
         [SwaggerOperation(OperationId = nameof(Details))]
