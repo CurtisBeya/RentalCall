@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using RentalCall.Services.Interfaces;
 
 namespace RentalCall.Controllers
 {
@@ -13,7 +14,6 @@ namespace RentalCall.Controllers
     public class CallController : ControllerBase
     {
         private readonly ICallManager _callManager;
-
         public CallController(ICallManager callManager)
         {
             _callManager = callManager;
@@ -92,7 +92,7 @@ namespace RentalCall.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [Authorize]
+       //[Authorize]
         [HttpGet]
         [Route("Details/{id}")]
         [SwaggerOperation(OperationId = nameof(Details))]

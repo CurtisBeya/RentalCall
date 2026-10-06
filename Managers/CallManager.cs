@@ -1,11 +1,12 @@
-﻿using RentalCall.Enums;
+﻿using AutoMapper;
+using Microsoft.Extensions.Hosting;
+using RentalCall.Enums;
 using RentalCall.Managers.Interfaces;
 using RentalCall.Models;
 using RentalCall.Models.Dtos;
 using RentalCall.Repositories;
 using RentalCall.Repositories.Interfaces;
-using AutoMapper;
-using Microsoft.Extensions.Hosting;
+using RentalCall.Services.Interfaces;
 
 namespace RentalCall.Managers
 {
@@ -15,12 +16,14 @@ namespace RentalCall.Managers
         private readonly ICallCategoryRepository _callCategoryRepository;
         private readonly IActionItemManager _actionItemManager;
         private readonly IMapper _mapper;
-        public CallManager(ICallRepository callRepository, ICallCategoryRepository callCategoryrepository, IActionItemManager actionItemManager, IMapper mapper)
+        private readonly ICacheService _cacheService;
+        public CallManager(ICallRepository callRepository, ICallCategoryRepository callCategoryrepository, IActionItemManager actionItemManager, IMapper mapper, ICacheService cacheService)
         {
             _callRepository = callRepository;
             _callCategoryRepository = callCategoryrepository; 
             _actionItemManager = actionItemManager;
             _mapper = mapper;
+            _cacheService = cacheService;
         }
 
         // Adds a new call
@@ -120,9 +123,27 @@ namespace RentalCall.Managers
         }
 
         // Return a specific call 
-        public async Task<CallModel?> Details(long AudioId)
+        public async Task<CallModel?> Details(long callId)
         {
-            return await _callRepository.Details(AudioId);
+            string cacheKey = $"call:details:{callId}";
+
+            // Try to get from cache
+            CallModel? cachedCall = _cacheService.Get<CallModel>(cacheKey);
+
+            if (cachedCall != null)
+            {
+                return cachedCall;
+            }
+
+            // Cache miss → fetch from repository
+            CallModel? call = await _callRepository.Details(callId);
+
+            if (call != null)
+            {
+                _cacheService.Set(cacheKey, call);
+            }
+
+            return call;
         }
 
         // Return a specific call given the file name

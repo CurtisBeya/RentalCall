@@ -17,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddSingleton<CacheService>();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -68,6 +70,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Register services
 builder.Services.AddScoped<IPasswordHasher<object>, PasswordHasher<object>>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
 
 // Repositories
 builder.Services.AddScoped<ICallRepository, CallRepository>();
