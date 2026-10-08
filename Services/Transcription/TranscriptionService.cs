@@ -1,80 +1,179 @@
 ﻿using RentalCall.Services.Transcription.Models;
-using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace RentalCall.Services.Transcription
 {
     public class TranscriptionService
     {
         private readonly HttpClient _httpClient;
-        TranscriptionService(HttpClient httpClient)
+        private readonly string _endpoint;
+
+        public TranscriptionService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-        }      
 
-        public async Task<string> TranscribeCall(Uri sasUri)
+            _endpoint = configuration["AzureSpeech:Endpoint"]
+                ?? throw new InvalidOperationException(
+                    "Azure Speech endpoint is not configured.");
+        }
+
+        public async Task<TranscriptionResult> TranscribeCall(Uri sasUri)
         {
-            // Build request body
+            // 1. Submit transcription job
             var requestBody = new
             {
-                contentUrls = new[] { sasUri.ToString() },
+                contentUrls = new[]
+                {
+                    sasUri.ToString()
+                },
+
                 locale = "en-US",
-                displayName = "Transcription job",
+
+                displayName = "RentalCall Transcription",
+
                 properties = new
                 {
                     diarizationEnabled = false,
-                    channels = new [] // sets multi-channel audio processing to differentiate in transcripts speakers, if applicable
+
+                    channels = new[]
                     {
                         new { channelNumber = 0 },
                         new { channelNumber = 1 }
-                    }                                           
+                    }
                 }
             };
 
-            // Submit to Speech-to-Text API
             var response = await _httpClient.PostAsJsonAsync(
-                "https://<region>.api.cognitive.microsoft.com/speechtotext/v3.1/transcriptions",
+                $"{_endpoint}/speechtotext/v3.1/transcriptions",
                 requestBody);
 
             response.EnsureSuccessStatusCode();
 
-            // Parse initial job response
-            var job = await response.Content.ReadFromJsonAsync<JobResponse>();
+            var job = await response.Content
+                .ReadFromJsonAsync<JobResponse>();
 
-            // Poll until status = Succeeded
-            string jobUrl = job.Self;
-            string status = job.Status;
-
-            while (status == "NotStarted" || status == "Running")
+            if (job == null || string.IsNullOrWhiteSpace(job.Self))
             {
-                await Task.Delay(5000); // wait 5 seconds before polling again
-
-                var pollResponse = await _httpClient.GetAsync(jobUrl);
-                pollResponse.EnsureSuccessStatusCode();
-
-                job = await pollResponse.Content.ReadFromJsonAsync<JobResponse>();
-                status = job.Status;
+                throw new InvalidOperationException(
+                    "Azure Speech did not return a valid transcription job.");
             }
 
-            // Once succeeded, fetch final result
-            if (status == "Succeeded")
+            // 2. Poll until transcription is complete
+            while (job.Status == "NotStarted" ||
+                   job.Status == "Running")
             {
-                var resultResponse = await _httpClient.GetAsync(jobUrl + "/files");
-                resultResponse.EnsureSuccessStatusCode();
+                await Task.Delay(TimeSpan.FromSeconds(5));
 
-                var files = await resultResponse.Content.ReadFromJsonAsync<FileListResponse>();
+                var pollResponse = await _httpClient.GetAsync(job.Self);
 
-                // The transcript file is usually in "results.json"
-                var transcriptFile = files.Values.FirstOrDefault(f => f.Kind == "Transcription");
-                if (transcriptFile != null)
+                pollResponse.EnsureSuccessStatusCode();
+
+                job = await pollResponse.Content
+                    .ReadFromJsonAsync<JobResponse>();
+
+                if (job == null)
                 {
-                    var transcriptResponse = await _httpClient.GetAsync(transcriptFile.Links.ContentUrl);
-                    transcriptResponse.EnsureSuccessStatusCode();
-
-                    return await transcriptResponse.Content.ReadAsStringAsync();
+                    throw new InvalidOperationException(
+                        "Unable to retrieve the transcription job status.");
                 }
             }
 
-            return "";
+            // 3. Check whether transcription succeeded
+            if (job.Status != "Succeeded")
+            {
+                throw new InvalidOperationException(
+                    $"Transcription failed with status: {job.Status}");
+            }
+
+            // 4. Get the transcription files
+            var filesResponse = await _httpClient.GetAsync(
+                $"{job.Self}/files");
+
+            filesResponse.EnsureSuccessStatusCode();
+
+            var files = await filesResponse.Content
+                .ReadFromJsonAsync<FileListResponse>();
+
+            if (files?.Values == null || files.Values.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    "No transcription files were returned.");
+            }
+
+            // 5. Find the transcription file
+            var transcriptFile = files.Values
+                .FirstOrDefault(file =>
+                    file.Kind == "Transcription");
+
+            if (transcriptFile == null ||
+                string.IsNullOrWhiteSpace(
+                    transcriptFile.Links?.ContentUrl))
+            {
+                throw new InvalidOperationException(
+                    "The transcription result could not be found.");
+            }
+
+            // 6. Download the transcription JSON
+            var transcriptResponse = await _httpClient.GetAsync(
+                transcriptFile.Links.ContentUrl);
+
+            transcriptResponse.EnsureSuccessStatusCode();
+
+            var transcription =
+                await transcriptResponse.Content
+                    .ReadFromJsonAsync<AzureTranscriptionResponse>();
+
+            if (transcription == null ||
+                transcription.RecognizedPhrases == null)
+            {
+                throw new InvalidOperationException(
+                    "The transcription response was empty.");
+            }
+
+            // 7. Extract spoken text, channel and confidence
+            var phrases = transcription.RecognizedPhrases
+                .Where(phrase =>
+                    phrase.NBest != null &&
+                    phrase.NBest.Count > 0)
+                .Select(phrase =>
+                {
+                    var bestResult = phrase.NBest[0];
+
+                    var speaker = phrase.Channel switch
+                    {
+                        0 => "Agent",
+                        1 => "Customer",
+                        _ => $"Channel {phrase.Channel}"
+                    };
+
+                    return new
+                    {
+                        Speaker = speaker,
+                        Text = bestResult.Display,
+                        Confidence = bestResult.Confidence
+                    };
+                })
+                .Where(phrase =>
+                    !string.IsNullOrWhiteSpace(phrase.Text))
+                .ToList();
+
+            // 8. Build clean transcript
+            var transcript = string.Join(
+                Environment.NewLine + Environment.NewLine,
+                phrases.Select(phrase =>
+                    $"{phrase.Speaker}: {phrase.Text}"));
+
+            // 9. Calculate average confidence
+            var confidence = phrases.Count > 0
+                ? phrases.Average(phrase => phrase.Confidence)
+                : 0;
+
+            // 10. Return only transcript and confidence
+            return new TranscriptionResult
+            {
+                Transcript = transcript,
+                Confidence = confidence
+            };
         }
     }
 }

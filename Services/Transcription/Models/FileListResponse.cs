@@ -2,6 +2,6 @@
 {
     public class FileListResponse
     {
-        public List<FileItem> Values { get; set; }
+        public List<TranscriptionFile> Values { get; set; } = new();
     }
 }

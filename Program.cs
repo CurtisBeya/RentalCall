@@ -10,6 +10,7 @@ using RentalCall.Repositories;
 using RentalCall.Repositories.Interfaces;
 using RentalCall.Services;
 using RentalCall.Services.Interfaces;
+using RentalCall.Services.Transcription;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddSingleton<CacheService>();
 builder.Services.AddMemoryCache();
+
+builder.Services.AddHttpClient<TranscriptionService>(
+    (serviceProvider, client) =>
+    {
+        var configuration =
+            serviceProvider.GetRequiredService<IConfiguration>();
+
+        var key = configuration["AzureSpeech:Key"]
+            ?? throw new InvalidOperationException(
+                "Azure Speech key is not configured.");
+
+        client.DefaultRequestHeaders.Add(
+            "Ocp-Apim-Subscription-Key",
+            key);
+    });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
