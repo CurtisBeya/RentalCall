@@ -8,13 +8,9 @@ namespace RentalCall.Services.Transcription
         private readonly HttpClient _httpClient;
         private readonly string _endpoint;
 
-        public TranscriptionService(HttpClient httpClient, IConfiguration configuration)
+        public TranscriptionService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
-
-            _endpoint = configuration["AzureSpeech:Endpoint"]
-                ?? throw new InvalidOperationException(
-                    "Azure Speech endpoint is not configured.");
+            _httpClient = httpClientFactory.CreateClient("AzureSpeech");
         }
 
         public async Task<TranscriptionResult> TranscribeCall(Uri sasUri)

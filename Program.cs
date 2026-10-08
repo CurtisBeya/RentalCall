@@ -1,8 +1,12 @@
+using Azure;
+using Azure.AI.OpenAI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using OpenAI;
 using RentalCall;
 using RentalCall.Managers;
 using RentalCall.Managers.Interfaces;
@@ -11,6 +15,7 @@ using RentalCall.Repositories.Interfaces;
 using RentalCall.Services;
 using RentalCall.Services.Interfaces;
 using RentalCall.Services.Transcription;
+using System.ClientModel;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,20 +26,32 @@ builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddSingleton<CacheService>();
 builder.Services.AddMemoryCache();
 
-builder.Services.AddHttpClient<TranscriptionService>(
-    (serviceProvider, client) =>
-    {
-        var configuration =
-            serviceProvider.GetRequiredService<IConfiguration>();
+//Register HttpClient for Azure Speech Service
+builder.Services.AddHttpClient("AzureSpeech", (sp, client) =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var key = config["AzureSpeech:Key"];
+    client.BaseAddress = new Uri(config["AzureSpeech:Endpoint"]);
+    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+});
 
-        var key = configuration["AzureSpeech:Key"]
-            ?? throw new InvalidOperationException(
-                "Azure Speech key is not configured.");
+// Register OpenAI client once for summarization + classification
+builder.Services.AddSingleton(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
 
-        client.DefaultRequestHeaders.Add(
-            "Ocp-Apim-Subscription-Key",
-            key);
-    });
+    var endpoint = config["AzureOpenAI:Endpoint"]
+        ?? throw new InvalidOperationException(
+            "Azure OpenAI endpoint is not configured.");
+
+    var key = config["AzureOpenAI:Key"]
+        ?? throw new InvalidOperationException(
+            "Azure OpenAI key is not configured.");
+
+    return new AzureOpenAIClient(
+        new Uri(endpoint),
+        new ApiKeyCredential(key));
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -87,6 +104,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPasswordHasher<object>, PasswordHasher<object>>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<TranscriptionService>();
+builder.Services.AddScoped<SummarizationService>();
+builder.Services.AddScoped<IIntentClassificationService, IntentClassificationService>();
 
 // Repositories
 builder.Services.AddScoped<ICallRepository, CallRepository>();

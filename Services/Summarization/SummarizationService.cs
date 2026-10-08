@@ -10,9 +10,9 @@ namespace RentalCall.Services
 {
     public class SummarizationService
     {
-        private readonly OpenAIClient _client;
+        private readonly AzureOpenAIClient _client;
 
-        public SummarizationService(OpenAIClient client)
+        public SummarizationService(AzureOpenAIClient client)
         {
             _client = client;
         }
@@ -53,7 +53,7 @@ namespace RentalCall.Services
 
                 Your tasks:
 
-                1. Provide a concise Summary of the conversation in 3–5 sentences.
+                1. Provide a concise Summary of the conversation in 1–2 sentences.
                 2. Extract ALL clear and actionable tasks that need to be completed.
                 3. Identify the responsible party when it is clear from the conversation.
                 5. The number of action items may be zero, one, or many.
